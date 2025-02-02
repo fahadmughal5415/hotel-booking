@@ -6,7 +6,7 @@ df = pd.read_csv("hotels.csv", dtype={"id": str})
 class Hotel:
     def __init__(self, hotel_id):
         self.hotel_id = hotel_id
-        self.name = df.loc[df["id"] == self.hotel_id, "name"]
+        self.name = df.loc[df["id"] == self.hotel_id, "name"].squeeze()
     def book(self):
         df.loc[df["id"] == self.hotel_id, "available"] = "no"
         df.to_csv("hotels.csv", index=False)
@@ -28,8 +28,8 @@ class ReservationTicket:
         content = f"""
     Thank you for the reservation.
     Here is your hotel details
-    Name: {self.customer_name}
-    Hotel: {self.hotel.name}
+    Customer Name: {self.customer_name}
+    Hotel Name: {self.hotel.name}
 """
         return content
 
