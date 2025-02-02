@@ -59,7 +59,7 @@ class SecureCreditCard(CreditCard):
              return True
          
 class SPAReservationTicket(ReservationTicket):
-    def spa_generate(self):
+    def generate(self):
         content = f"""
     Thank you for the SPA reservation.
     Here is your SPA booking details
@@ -89,7 +89,7 @@ if hotel.available():
             spa = input("Do you want to book a SPA? (yes/no): ")
             spa_reservation = SPAReservationTicket(name, hotel)
             if spa.lower() == "yes":
-                print(spa_reservation.spa_generate())
+                print(spa_reservation.generate())
             
             
         else:
