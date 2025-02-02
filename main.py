@@ -57,18 +57,28 @@ class SecureCreditCard(CreditCard):
          self.password = df_cards_security.loc[df_cards_security["number"] == self.card_number, "password"].squeeze()
          if self.password == given_password:
              return True
+         
+class SPAReservationTicket(ReservationTicket):
+    def spa_generate(self):
+        content = f"""
+    Thank you for the SPA reservation.
+    Here is your SPA booking details
+    Customer Name: {self.customer_name}
+    Hotel Name: {self.hotel.name}
+"""
+        return content
         
 
 
 print(df)
 print(df_cards)
 hotel_ID = input("Enter the id of the hotel: ")
+number = input("Enter the credit card number: ")
+expiration = input("Enter the expiration date (MM/YY): ")
+holder = input("Enter the credit card holder's name: ")
+cvv = input("Enter the CVV: ")
 hotel = Hotel(hotel_ID)
 if hotel.available():
-    number = input("Enter the credit card number: ")
-    expiration = input("Enter the expiration date (MM/YY): ")
-    holder = input("Enter the credit card holder's name: ")
-    cvv = input("Enter the CVV: ")
     credit_card = SecureCreditCard(number)
     if credit_card.validate(expiration, holder, cvv):
         if credit_card.authentication(given_password="mypass"):
@@ -76,6 +86,12 @@ if hotel.available():
             name = input("Enter the name of the customer: ")
             reservation = ReservationTicket(name, hotel)
             print(reservation.generate())
+            spa = input("Do you want to book a SPA? (yes/no): ")
+            spa_reservation = SPAReservationTicket(name, hotel)
+            if spa.lower() == "yes":
+                print(spa_reservation.spa_generate())
+            
+            
         else:
             print("Authentication failed")
     else:
